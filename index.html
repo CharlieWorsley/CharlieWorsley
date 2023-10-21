@@ -10,52 +10,113 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js" integrity="sha512-Wbf9QOX8TxnLykSrNGmAc5mDntbpyXjOw9zgnKql3DgQ7Iyr5TCSPWpvpwDuo+jikYoSNMD9tRRH854VfPpL9A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<style>
-		.container { margin:.5rem; }
-		.cams { }
-		.cams > div { margin:.5rem 0; padding:.5rem; }
-		.cams > div img { max-width:100%; }
+		.cont { margin:.5rem; }
+		.cams { display:flex; flex-wrap:wrap; flex-direction:row; }
+		.cams > .cam { display:flex; flex-direction:column; margin:.5rem .25rem; padding:.5rem; max-width:300px; flex-grow:1; overflow:hidden; background-color:#f5f5f5; box-shadow:0px 0px 2px #000; }
+		.cams > .cam .cam-head { padding:0 .25rem; font-size:0.8rem; }
+		.cams > .cam .cam-image { width:100%; height:220px; }
+		.cams > .cam img { max-width:100%; }
+		.cams > .cam iframe { width:100% !important; height:100% !important; }
+		
+		.cams > .cam.maximized { display:block; position:fixed; z-index:10; top:0; left:0; margin:1vw 1vh; padding:0 1vw; width:98vw; max-width:98vw; height:auto; }
+		.cams > .cam.maximized .cam-image { width:100%; height:100%; }
 	</style>
 
 	<script>
-
+		let refreshSeconds = 30;
 		window.addEventListener('load', (event) => {
+			updateCams();
+
+			var buttons = document.querySelectorAll('div.cams div.cam div.cam-head button');
+			[...buttons].forEach(b => {
+				b.addEventListener('click', function(e) { 
+					let cam = e.target.closest('.cam');
+					if (cam) {
+						cam.classList.toggle('maximized');
+					}
+				});
+			});
+		});
+
+		let updateCams = () => {
 			var timestamp = parseInt((new Date().getTime()).toFixed(0));
-			var cams = document.querySelectorAll('div.cams img');
+			var cams = document.querySelectorAll('div.cams div.cam div.cam-image img');
 
 			[...cams].forEach(c => {
 				console.log(c.getAttribute('data-src') + '?' + timestamp);
 				c.src = c.getAttribute('data-src') + '?' + timestamp;
 			});
 
-		});
+			if (refreshSeconds > 0) {
+				setTimeout(function () { updateCams(); }, refreshSeconds * 1000);
+			}
+		}
+ 
 	</script>
 </head>
 
 <body>
-    <div class="container">
+    <div class="cont">
+
         <h1>Guernsey Webcams</h1>
+
         <div class="cams">
-			<div>
-				<div>Seeker St. Peter Port Webcam <a href="https://seeker.gg/Home/Webcam" target="_blank">View</a></div>
-				<img data-src="https://cdn.seeker.gg/seekercam/latest.jpg" alt="Guernsey Yacht Club Harbour Webcam" />
+
+			<div class="cam">
+				<div class="cam-head">Seeker St. Peter Port <a href="https://seeker.gg/Home/Webcam" target="_blank">&#128279;</a><button>&#128470;</button></div>
+				<div class="cam-image"><img data-src="https://cdn.seeker.gg/seekercam/latest.jpg" alt="Guernsey Yacht Club Harbour" /></div>
 			</div>
-			<div>
-				<div>Guernsey Yacht Club Harbour Webcam <a href="https://www.gyc.org.gg/the-clubhouse/webcams/" target="_blank">View</a></div>
-				<img data-src="https://gyc.enrapture.webcam/camera2.php" alt="Guernsey Yacht Club Harbour Webcam" />
+
+			<div class="cam">
+				<div class="cam-head">Guernsey Yacht Club Harbour <a href="https://www.gyc.org.gg/the-clubhouse/webcams/" target="_blank">&#128279;</a><button>&#128470;</button></div>
+				<div class="cam-image"><img data-src="https://gyc.enrapture.webcam/camera2.php" alt="Guernsey Yacht Club Harbour" /></div>
 			</div>
-			<div>
-				<div>Guernsey Yacht Club Havelet Bay Webcam <a href="https://www.gyc.org.gg/the-clubhouse/webcams/" target="_blank">View</a></div>
-				<img data-src="https://gyc.enrapture.webcam/camera1.php" alt="Guernsey Yacht Club Havelet Bay Cam" />
+
+			<div class="cam">
+				<div class="cam-head">Guernsey Yacht Club Havelet Bay <a href="https://www.gyc.org.gg/the-clubhouse/webcams/" target="_blank">&#128279;</a><button>&#128470;</button></div>
+				<div class="cam-image"><img data-src="https://gyc.enrapture.webcam/camera1.php" alt="Guernsey Yacht Club Havelet Bay" /></div>
 			</div>
-			<div>
-				<div>Herm Harbour Webcam <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
-				<img data-src="https://www.herm.com/webcam/camera1.php" alt="Herm Harbour Webcam" />
+
+			<div class="cam">
+				<div class="cam-head">Guernsey Airport (Aiglle) <a href="https://weather.gg/webcams" target="_blank">&#128279;</a><button>&#128470;</button></div>
+				<div class="cam-image"><img data-src="https://weather.gg/api/webcam/aiglle" alt="Guernsey Airport (Aiglle)" /></div>
 			</div>
-			<div>
-				<div>Herm White House Webcam <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
-				<img data-src="https://www.herm.com/webcam/camera2.php" alt="Herm White House Webcam" />
+
+			<div class="cam">
+				<div class="cam-head">Guernsey Airport (Stands 1-8) <a href="https://weather.gg/webcams" target="_blank">&#128279;</a><button>&#128470;</button></div>
+				<div class="cam-image"><img data-src="https://weather.gg/api/webcam/aurigny18" alt="Guernsey Airport (Stands 1-8)" /></div>
 			</div>
-			<!--<div>
+
+			<div class="cam">
+				<div class="cam-head">Guernsey Airport (Stands 21-23) <a href="https://weather.gg/webcams" target="_blank">&#128279;</a><button>&#128470;</button></div>
+				<div class="cam-image"><img data-src="https://weather.gg/api/webcam/aurigny21" alt="Guernsey Airport (Stands 21-23)" /></div>
+			</div>
+
+			<div class="cam">
+				<div class="cam-head">Herm Harbour <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">&#128279;</a><button>&#128470;</button></div>
+				<div class="cam-image"><img data-src="https://www.herm.com/webcam/camera1.php" alt="Herm Harbour" /></div>
+			</div>
+
+			<div class="cam">
+				<div class="cam-head">Herm White House <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">&#128279;</a><button>&#128470;</button></div>
+				<div class="cam-image"><img data-src="https://www.herm.com/webcam/camera2.php" alt="Herm White House" /></div>
+			</div>
+
+			<div class="cam">
+				<div class="cam-head">Alderney Harbour <a href="https://www.ipcamlive.com/53f3477a8ff5f" target="_blank">&#128279;</a><button>&#128470;</button></div>
+				<div class="cam-image"><iframe id="playeriframe" src="https://www.ipcamlive.com/player/player.php?alias=53f3477a8ff5f&autoplay=1&&token=BM%2F3mLxZR%2FqtdVcJ4rwNR3cFPOxZE8HpTk0dUB3LB0U%3D" frameborder="0" allowfullscreen=""></iframe></div>
+			</div>
+
+			<!--<div class="cam">
+				<div class="cam-head">Yakwax Guernsey Surf Vazon Bay <a href="https://yakwax.com/pages/surf-cam" target="_blank">&#128279;</a></div>
+				<div class="cam-image">
+					<div class="box3 img-block">
+						<script src="https://live.streamdays.com/rv4tasrr" type="text/javascript" language="javascript"></script>
+					</div>
+				</div>
+			</div>
+
+			<div>
 				<div>Guernsey Yacht Club Havelet Bay Webcam <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
 				<img src="https://www.herm.com/webcam/camera3.php?1697889570331" alt="Guernsey Yacht Club Havelet Bay Cam" />
 			</div>
@@ -63,6 +124,7 @@
 				<div>Guernsey Yacht Club Havelet Bay Webcam <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
 				<img src="https://www.herm.com/webcam/camera4.php?1697889594334" alt="Guernsey Yacht Club Havelet Bay Cam" />
 			</div>-->
+
 		</div>
     </div>
 </body>
