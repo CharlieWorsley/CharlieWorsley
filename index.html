@@ -8,12 +8,62 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js" integrity="sha512-Wbf9QOX8TxnLykSrNGmAc5mDntbpyXjOw9zgnKql3DgQ7Iyr5TCSPWpvpwDuo+jikYoSNMD9tRRH854VfPpL9A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<style>
+		.container { margin:.5rem; }
+		.cams { }
+		.cams > div { margin:.5rem 0; padding:.5rem; }
+		.cams > div img { max-width:100%; }
+	</style>
+
+	<script>
+
+		window.addEventListener('load', (event) => {
+			var timestamp = parseInt((new Date().getTime()).toFixed(0));
+			var cams = document.querySelectorAll('div.cams img');
+
+			[...cams].forEach(c => {
+				console.log(c.getAttribute('data-src') + '?' + timestamp);
+				c.src = c.getAttribute('data-src') + '?' + timestamp;
+			});
+
+		});
+	</script>
 </head>
 
 <body>
-    <div>
+    <div class="container">
         <h1>Guernsey Webcams</h1>
-        <p>Content to follow.</p>
+        <div class="cams">
+			<div>
+				<div>Seeker St. Peter Port Webcam <a href="https://seeker.gg/Home/Webcam" target="_blank">View</a></div>
+				<img data-src="https://cdn.seeker.gg/seekercam/latest.jpg" alt="Guernsey Yacht Club Harbour Webcam" />
+			</div>
+			<div>
+				<div>Guernsey Yacht Club Harbour Webcam <a href="https://www.gyc.org.gg/the-clubhouse/webcams/" target="_blank">View</a></div>
+				<img data-src="https://gyc.enrapture.webcam/camera2.php" alt="Guernsey Yacht Club Harbour Webcam" />
+			</div>
+			<div>
+				<div>Guernsey Yacht Club Havelet Bay Webcam <a href="https://www.gyc.org.gg/the-clubhouse/webcams/" target="_blank">View</a></div>
+				<img data-src="https://gyc.enrapture.webcam/camera1.php" alt="Guernsey Yacht Club Havelet Bay Cam" />
+			</div>
+			<div>
+				<div>Herm Harbour Webcam <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
+				<img data-src="https://www.herm.com/webcam/camera1.php" alt="Herm Harbour Webcam" />
+			</div>
+			<div>
+				<div>Herm White House Webcam <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
+				<img data-src="https://www.herm.com/webcam/camera2.php" alt="Herm White House Webcam" />
+			</div>
+			<!--<div>
+				<div>Guernsey Yacht Club Havelet Bay Webcam <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
+				<img src="https://www.herm.com/webcam/camera3.php?1697889570331" alt="Guernsey Yacht Club Havelet Bay Cam" />
+			</div>
+			<div>
+				<div>Guernsey Yacht Club Havelet Bay Webcam <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
+				<img src="https://www.herm.com/webcam/camera4.php?1697889594334" alt="Guernsey Yacht Club Havelet Bay Cam" />
+			</div>-->
+		</div>
     </div>
 </body>
 </html>
