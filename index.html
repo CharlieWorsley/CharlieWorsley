@@ -12,31 +12,121 @@
 	<style>
 		.cont { margin:.5rem; }
 		.cams { display:flex; flex-wrap:wrap; flex-direction:row; }
-		.cams > .cam { display:flex; flex-direction:column; margin:.5rem .25rem; padding:.5rem; max-width:300px; flex-grow:1; overflow:hidden; background-color:#f5f5f5; box-shadow:0px 0px 2px #000; }
+		.cams > .cam { display:flex; flex-direction:column; margin:.5rem .25rem; padding:.5rem; max-width:300px; flex-grow:1; overflow:hidden; background-color:#eeeeff; box-shadow:0px 0px 2px #000; }
 		.cams > .cam .cam-head { padding:0 .25rem; font-size:0.8rem; }
 		.cams > .cam .cam-image { width:100%; height:220px; }
 		.cams > .cam img { max-width:100%; }
 		.cams > .cam iframe { width:100% !important; height:100% !important; }
 		
-		.cams > .cam.maximized { display:block; position:fixed; z-index:10; top:0; left:0; margin:1vw 1vh; padding:0 1vw; width:98vw; max-width:98vw; height:auto; }
+		body > div.overlay { display:none; }
+
+		body > div.overlay .prev { display:block; position:fixed; z-index:9; left:1vw; top:calc(50% - 5vw); width:3vw; height:10vw; background-color:rgba(255,255,255,1); color:#000; border-radius:25%; border:1px solid #000; cursor:pointer; }
+		body > div.overlay .prev::before { content:'\2039'; position:absolute; top:3.5vw; left:.8vw; display:block; font-size:4vw; line-height:1.8vw; text-align:center; }
+
+		body > div.overlay .next { display:block; position:fixed; z-index:9; right:1vw; top:calc(50% - 5vw); width:3vw; height:10vw; background-color:rgba(255,255,255,1); color:#000; border-radius:25%; border:1px solid #000; cursor:pointer; }
+		body > div.overlay .next::before { content:'\203A'; position:absolute; top:3.5vw; left:.8vw; display:block; font-size:4vw; line-height:1.8vw; text-align:center; }
+
+		body > div.overlay.open { display:block; position:fixed; z-index:9; left:0; top:0; width:100vw; height:100vh; background-color:rgba(200,200,200,.5); }
+		.cams > .cam.maximized { display:block; position:fixed; z-index:10; top:5vh; left:5vw; margin:0; padding:0 1vw 1vw 1vw; width:90vw; max-width:90vw; height:90vh; max-height:90vh; }
 		.cams > .cam.maximized .cam-image { width:100%; height:100%; }
+		.cams > .cam.maximized .cam-image img { width:100%; }
 	</style>
 
 	<script>
 		let refreshSeconds = 30;
 		window.addEventListener('load', (event) => {
 			updateCams();
+			setupOverlay();
+			setupMinMaxButtons();
+		});
 
+		let setupOverlay = () => {
+			let overlay = document.querySelector('body > div.overlay');
+			if (overlay === null) {
+				overlay = document.createElement('div');
+				overlay.className = 'overlay';
+
+				overlay.addEventListener('click', function(e) { 
+					var cam = document.querySelector('div.cams div.cam.maximized');
+					if (cam) { toggleMinMax(cam); }
+				});
+
+				let prev = document.createElement('div');
+				prev.className = 'prev';
+				prev.title = 'Previous';
+				prev.addEventListener('click', function(e) { 
+					moveMaxCam('prev');
+					e.stopPropagation();
+				});
+
+				let next = document.createElement('div');
+				next.className = 'next';
+				next.title = 'Next';
+				next.addEventListener('click', function(e) { 
+					moveMaxCam('next');
+					e.stopPropagation();
+				});
+
+				overlay.appendChild(prev);
+				overlay.appendChild(next);
+				document.body.appendChild(overlay);
+			}
+		}
+
+		let setupMinMaxButtons = () => {
 			var buttons = document.querySelectorAll('div.cams div.cam div.cam-head button');
 			[...buttons].forEach(b => {
 				b.addEventListener('click', function(e) { 
 					let cam = e.target.closest('.cam');
 					if (cam) {
-						cam.classList.toggle('maximized');
+						toggleMinMax(cam);
 					}
 				});
 			});
-		});
+		}
+
+		let toggleMinMax = (cam) => {
+			setupOverlay();
+			if (cam) {
+				cam.classList.toggle('maximized');
+				let overlay = document.querySelector('body > div.overlay');
+				if (overlay) {
+					if (cam.classList.contains('maximized')) {
+						overlay.classList.add('open');
+					} else {
+						overlay.classList.remove('open');
+					}
+				}
+			}
+		}
+
+		let moveMaxCam = (direction) => {
+			if (!direction) direction = 'next';
+			let cams = document.querySelectorAll('div.cams div.cam');
+			let max = document.querySelector('div.cams div.cam.maximized');
+			let maxIdx = -1;
+			let newIdx = -1;
+			let maxFound = false;
+			if (cams && max) {
+				[...cams].forEach(c => {
+					if (!maxFound) {
+						maxIdx += 1;
+						maxFound = c.classList.contains('maximized');
+					}
+				});
+
+				if (maxFound && maxIdx > -1) {
+					if (direction === 'next') {
+						newIdx = maxIdx + 1 < cams.length ? maxIdx + 1 : 0;
+					} else if (direction === 'prev') {
+						newIdx = maxIdx - 1 > 0 ? maxIdx - 1 : cams.length - 1;
+					}
+				}
+
+				max.classList.remove('maximized');
+				cams[newIdx].classList.add('maximized');
+			}
+		}
 
 		let updateCams = () => {
 			var timestamp = parseInt((new Date().getTime()).toFixed(0));
@@ -107,8 +197,8 @@
 				<div class="cam-image"><iframe id="playeriframe" src="https://www.ipcamlive.com/player/player.php?alias=53f3477a8ff5f&autoplay=1&&token=BM%2F3mLxZR%2FqtdVcJ4rwNR3cFPOxZE8HpTk0dUB3LB0U%3D" frameborder="0" allowfullscreen=""></iframe></div>
 			</div>
 
-			<!--<div class="cam">
-				<div class="cam-head">Yakwax Guernsey Surf Vazon Bay <a href="https://yakwax.com/pages/surf-cam" target="_blank">&#128279;</a></div>
+			<div class="cam">
+				<div class="cam-head">Yakwax Guernsey Surf Vazon Bay <a href="https://yakwax.com/pages/surf-cam" target="_blank">&#128279;</a><button>&#128470;</button></div>
 				<div class="cam-image">
 					<div class="box3 img-block">
 						<script src="https://live.streamdays.com/rv4tasrr" type="text/javascript" language="javascript"></script>
@@ -116,7 +206,7 @@
 				</div>
 			</div>
 
-			<div>
+			<!--<div>
 				<div>Guernsey Yacht Club Havelet Bay Webcam <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
 				<img src="https://www.herm.com/webcam/camera3.php?1697889570331" alt="Guernsey Yacht Club Havelet Bay Cam" />
 			</div>
