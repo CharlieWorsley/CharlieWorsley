@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>Hello</title>
+	<script>
+		window.onload = () => {
+			currentURL = window.location.href;
+			lowerCaseURL = currentURL.toLowerCase();
+			if (lowerCaseURL === 'charlieworsley') {
+				location.replace('CharlieWorsley');
+			}
+			/*if (currentURL != lowerCaseURL) {
+				location.replace(lowerCaseURL);
+			}*/
+		};
+	</script>
+</head>
+<body>
+<h1>404 page</h1>
+</body>
+</html>
