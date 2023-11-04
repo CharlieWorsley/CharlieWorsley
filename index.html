@@ -9,6 +9,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js" integrity="sha512-Wbf9QOX8TxnLykSrNGmAc5mDntbpyXjOw9zgnKql3DgQ7Iyr5TCSPWpvpwDuo+jikYoSNMD9tRRH854VfPpL9A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+	<!--<script type="module" src="https://unpkg.com/x-frame-bypass"></script>
+	<script type="text/javascript" src="jquery-3.min.js"> </script>-->
+
 	<style>
 		.cont { margin:.5rem; }
 		.cams { display:flex; flex-wrap:wrap; flex-direction:row; }
@@ -133,7 +136,7 @@
 			var cams = document.querySelectorAll('div.cams div.cam div.cam-image img');
 
 			[...cams].forEach(c => {
-				console.log(c.getAttribute('data-src') + '?' + timestamp);
+				//console.log(c.getAttribute('data-src') + '?' + timestamp);
 				c.src = c.getAttribute('data-src') + '?' + timestamp;
 			});
 
@@ -194,28 +197,63 @@
 
 			<div class="cam">
 				<div class="cam-head">Alderney Harbour <a href="https://www.ipcamlive.com/53f3477a8ff5f" target="_blank">&#128279;</a><button>&#128470;</button></div>
-				<div class="cam-image"><iframe id="playeriframe" src="https://www.ipcamlive.com/player/player.php?alias=53f3477a8ff5f&autoplay=1&&token=BM%2F3mLxZR%2FqtdVcJ4rwNR3cFPOxZE8HpTk0dUB3LB0U%3D" frameborder="0" allowfullscreen=""></iframe></div>
+				<div class="cam-image"><iframe id="playeriframe" 
+				src="https://www.ipcamlive.com/player/player.php?alias=53f3477a8ff5f&autoplay=1&&token=BM/3mLxZR/qtdVcJ4rwNR/IJdHHc4GX/2sfqFjnbDHY="
+				srd="https://www.ipcamlive.com/player/player.php?alias=53f3477a8ff5f&autoplay=1&&token=BM%2F3mLxZR%2FqtdVcJ4rwNR5M3IOyannCGxSCitpak0n0%3D" frameborder="0" allowfullscreen=""></iframe></div>
+			</div>
+
+			<div class="cam">
+				<div class="cam-head">Guernsey's East Coast CCTVWatch <a href="https://www.youtube.com/watch?v=zGz-BE8si40" target="_blank">&#128279;</a><button>&#128470;</button></div>
+				<div class="cam-image"><iframe width="560" height="315" src="https://www.youtube.com/embed/zGz-BE8si40?si=kli41czSRw-z97wa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
 			</div>
 
 			<div class="cam">
 				<div class="cam-head">Yakwax Guernsey Surf Vazon Bay <a href="https://yakwax.com/pages/surf-cam" target="_blank">&#128279;</a><button>&#128470;</button></div>
 				<div class="cam-image">
-					<div class="box3 img-block">
+					<!--<iframe
+					is="x-frame-bypass"
+					src="https://yakwax.com/pages/surf-cam" frameborder="0" allowfullscreen=""></iframe>-->
+					<!--<div class="box3 img-block">
 						<script src="https://live.streamdays.com/rv4tasrr" type="text/javascript" language="javascript"></script>
-					</div>
+					</div>-->
 				</div>
 			</div>
 
 			<!--<div>
-				<div>Guernsey Yacht Club Havelet Bay Webcam <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
-				<img src="https://www.herm.com/webcam/camera3.php?1697889570331" alt="Guernsey Yacht Club Havelet Bay Cam" />
+				<div>Herm Spine Road <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
+				<img src="https://www.herm.com/webcam/camera3.php?1697889570331" alt="Herm Spine Road" />
 			</div>
 			<div>
-				<div>Guernsey Yacht Club Havelet Bay Webcam <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
-				<img src="https://www.herm.com/webcam/camera4.php?1697889594334" alt="Guernsey Yacht Club Havelet Bay Cam" />
-			</div>-->
+				<div>Herm Harbour Beach towards Fisherman's Beach <a href="https://www.herm.com/about-herm-island/webcams/" target="_blank">View</a></div>
+				<img src="https://www.herm.com/webcam/camera4.php?1697889594334" alt="Herm Harbour Beach towards Fisherman's Beach" />
+			</div>
+			<div>
+				<div>Herm Rosaire Steps <a href="https://www.youtube.com/watch?v=mgw37bg2nfg" target="_blank">View</a></div>
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/mgw37bg2nfg?si=8lT1Imdvg9k2R1tA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			<div>
+			
+			-->
 
 		</div>
     </div>
+
+	<script>
+	  async function getSrc() {
+		const res = await fetch(
+		"https://cors-anywhere.herokuapp.com/https://www.ipcamlive.com/player/player.php?alias=53f3477a8ff5f&autoplay=1&&token=BM%2F3mLxZR%2FqtdVcJ4rwNR3cFPOxZE8HpTk0dUB3LB0U%3", 
+		//"https://cors-anywhere.herokuapp.com/https://www.ipcamlive.com/53f3477a8ff5f",
+		{
+		  method: 'GET',
+		  headers: {
+			// Here you can set any headers you want
+			'origin': 'moo'
+		  }
+		});
+		const blob = await res.blob();
+		const urlObject = URL.createObjectURL(blob);
+		//document.querySelector('iframe#playeriframe').setAttribute("src", urlObject)
+	  }
+	  getSrc();
+	</script>
 </body>
 </html>
